@@ -18,49 +18,94 @@ export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
 }
 
+type Props = {
+  changeToggle: boolean,
+  reloadToggle: boolean,
+  weight: string,
+  color: string,
 
+  spacing: number,
+
+  inclination: string,
+  lineHeight: string,
+  family: string
+}
 
 const fontChange = () => {
 
-  const [changeToggle] = useStorage(localKey.changeToggle)
-  const [relaodToggle, setReloadToggle] = useStorage(localKey.reloadToggle)
-  const [weight] = useStorage(localKey.weight)
-  const [color] = useStorage(localKey.color)
-  const [style] = useStorage(localKey.style)
-  const [lineHeight] = useStorage(localKey.lineHeight)
-  const [family] = useStorage(localKey.family)
+  const [changeToggle, setChangeToggle] = useStorage(localKey.changeToggle)
+  const [reloadToggle, setReloadToggle] = useStorage(localKey.reloadToggle)
+  const [weight, setWeight] = useStorage(localKey.weight)
+  const [color, setColor] = useStorage(localKey.color)
 
-  const css = `
-    * {
-      font-weight: ${weight} !important;
-      color: ${color} !important;
-      font-style: ${style} !important;
-      line-height: ${lineHeight} !important;
-      font-family: ${family} !important;
-    }
-  `
+  const [spacing, setSpacing] = useStorage(localKey.spacing)
 
-  function injectStyle(changeToggle: boolean,css: string) {
+  const [inclination, setInclination] = useStorage(localKey.inclination)
+  const [lineHeight, setLineHeight] = useStorage(localKey.lineHeight)
+  const [family, setFamily] = useStorage(localKey.family)
+
+  const resetStyleState = () => {
+    setWeight("normal")
+    setColor("")
+
+    setSpacing(0)
+
+    setInclination("normal")
+    setLineHeight("normal")
+    setFamily("")
+    setReloadToggle(false)
+  }
+
+  function injectStyle(changeToggle: boolean, style: Props) {
     const styleElement = document.createElement("style");
     styleElement.id = "font-changer-syab-syab"
     if (changeToggle) {
+      const css = `
+      * {
+        font-weight: ${style.weight} !important;
+        color: ${style.color} !important;
+        letter-spacing: ${style.spacing}px !important;
+        font-style: ${style.inclination} !important;
+        line-height: ${style.lineHeight} !important;
+        font-family: ${style.family} !important;
+      }
+    `
       styleElement.textContent = css;
       document.head.appendChild(styleElement);
     } else {
       // 力業だから後で直せそうなら直す
-      if (relaodToggle) {
+      if (reloadToggle) {
         window.location.reload()
-        setReloadToggle(false)
+        resetStyleState()
       }
     }
   }
 
   useEffect(() => {
-    injectStyle(changeToggle, css)
+    injectStyle(changeToggle, {
+      changeToggle,
+      reloadToggle,
+      weight,
+      color,
+      spacing,
+      inclination,
+      lineHeight,
+      family
+    })
     // if (!changeToggle) {
     //   window.location.reload()
     // }
-  }, [changeToggle])
+  }, [
+    changeToggle,
+    changeToggle,
+    reloadToggle,
+    weight,
+    color,
+    spacing,
+    inclination,
+    lineHeight,
+    family
+  ])
 
 
 

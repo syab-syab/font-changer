@@ -1,4 +1,4 @@
-import { useState } from "react"
+// import { useState } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 
 export const localKey = {
@@ -6,22 +6,24 @@ export const localKey = {
   reloadToggle: "local-reload-toggle",
   weight: "local-font-weight",
   color: "local-font-color",
-  style: "local-font-style",
+  spacing: "local-font-spacing",
+  inclination: "local-font-inclination",
   lineHeight: "local-line-height",
   family: "local-font-family",
 }
 
 // [ToDo]
-// 適用がtrue(押された状態)になっているなら
-// オプションを変更するとリアルタイムに反映させる感じにする
+// 開いてるタブすべてにスタイル変更が適用されるので
+// 一つのタブだけに適用させたい
 
 function IndexPopup() {
   // 選択はオプションページでやらせた方が良いかも
   const [changeToggle, setChangeToggle] = useStorage(localKey.changeToggle, false)
-  const [relaodToggle, setReloadToggle] = useStorage(localKey.reloadToggle, false)
+  const [reloadToggle, setReloadToggle] = useStorage(localKey.reloadToggle, false)
   const [weight, setWeight] = useStorage(localKey.weight, "normal")
-  const [color, setColor] = useStorage(localKey.color, "#000000")
-  const [style, setStyle] = useStorage(localKey.style, "normal")
+  const [color, setColor] = useStorage(localKey.color, "")
+  const [spacing, setSpacing] = useStorage(localKey.spacing, 0)
+  const [inclination, setInclination] = useStorage(localKey.inclination, "normal")
   const [lineHeight, setLineHeight] = useStorage(localKey.lineHeight, "normal")
   const [family, setFamily] = useStorage(localKey.family, "")
 
@@ -29,7 +31,7 @@ function IndexPopup() {
   const setResetState = () => {
     // setWeight("normal")
     // setColor("#000000")
-    // setStyle()
+    // setinclination("normal")
     // setFamily("")
     setChangeToggle(true)
   }
@@ -53,7 +55,7 @@ function IndexPopup() {
           <label>
             文字の太さ
           </label>
-          {/* font-weight */}     
+          {/* font-weight */}
           <select name="" id="" value={weight} onChange={(e) => setWeight(e.target.value)}>
             <option value="normal">普通</option>
             <option value="bold">濃く</option>
@@ -65,13 +67,27 @@ function IndexPopup() {
           <label htmlFor="color">
             文字の色
           </label>
-          <input type="color" id="color" value={color} onChange={(e) => setColor(e.target.value)} />     
+          {/* <input type="color" id="color" value={color} onChange={(e) => setColor(e.target.value)} /> */}
+          {/* 色の種類をもっと増やす */}
+          <select value={color} onChange={(e) => setColor(e.target.value)}>
+            <option value="">変更なし</option>
+            <option value="black">黒</option>
+            <option value="white">白</option>
+            <option value="red">赤</option>
+            <option value="blue">青</option>
+            <option value="green">緑</option>
+            <option value="yellow">黄色</option>
+            <option value="pink">ピンク</option>
+            <option value="gray">灰色</option>
+            <option value="purple">紫</option>
+          </select>
         </div>
 
         <div>
-          {/* <label>
+          <label>
             文字の間隔
-          </label> */}
+          </label>
+          <input type="number" value={spacing} onChange={(e) => setSpacing(Number(e.target.value))} />
           {/* letter-spacing */}
         </div>
 
@@ -79,11 +95,11 @@ function IndexPopup() {
           <label>
             文字の傾き
           </label>
-          <select value={style} onChange={(e) => setStyle(e.target.value)}>
+          <select value={inclination} onChange={(e) => setInclination(e.target.value)}>
             <option value="normal">変更なし</option>
             <option value="italic">傾ける</option>
           </select>
-          {/* font-style */}       
+          {/* font-style */}
         </div>
 
         <div>
@@ -98,7 +114,7 @@ function IndexPopup() {
             <option value="400%">400%</option>
             <option value="500%">500%</option>
           </select>
-          {/* line-heightで設定できる */}          
+          {/* line-heightで設定できる */}
         </div>
 
         <div>
@@ -112,14 +128,7 @@ function IndexPopup() {
             <option value="cursive">cursive</option>
             <option value="fantasy">fantasy</option>
             <option value="monospace">monospace</option>
-          </select>      
-        </div>
-
-        <div>
-          {/* <label>
-            背景色
-          </label> */}
-          {/* 必要無いかも */}          
+          </select>
         </div>
 
         <div>
