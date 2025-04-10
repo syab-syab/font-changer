@@ -23,26 +23,35 @@ export const config: PlasmoCSConfig = {
 const fontChange = () => {
 
   const [changeToggle] = useStorage(localKey.changeToggle)
+  const [relaodToggle, setReloadToggle] = useStorage(localKey.reloadToggle)
   const [weight] = useStorage(localKey.weight)
   const [color] = useStorage(localKey.color)
+  const [style] = useStorage(localKey.style)
+  const [lineHeight] = useStorage(localKey.lineHeight)
   const [family] = useStorage(localKey.family)
 
   const css = `
     * {
       font-weight: ${weight} !important;
       color: ${color} !important;
+      font-style: ${style} !important;
+      line-height: ${lineHeight} !important;
       font-family: ${family} !important;
     }
   `
 
   function injectStyle(changeToggle: boolean,css: string) {
+    const styleElement = document.createElement("style");
+    styleElement.id = "font-changer-syab-syab"
     if (changeToggle) {
-      const style = document.createElement("style");
-      style.textContent = css;
-      document.head.appendChild(style);
+      styleElement.textContent = css;
+      document.head.appendChild(styleElement);
     } else {
-      console.log("")
-
+      // 力業だから後で直せそうなら直す
+      if (relaodToggle) {
+        window.location.reload()
+        setReloadToggle(false)
+      }
     }
   }
 

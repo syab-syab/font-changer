@@ -3,29 +3,41 @@ import { useStorage } from "@plasmohq/storage/hook"
 
 export const localKey = {
   changeToggle: "local-font-change-toggle",
+  reloadToggle: "local-reload-toggle",
   weight: "local-font-weight",
   color: "local-font-color",
-  family: "local-font-family"
+  style: "local-font-style",
+  lineHeight: "local-line-height",
+  family: "local-font-family",
 }
+
+// [ToDo]
+// 適用がtrue(押された状態)になっているなら
+// オプションを変更するとリアルタイムに反映させる感じにする
 
 function IndexPopup() {
   // 選択はオプションページでやらせた方が良いかも
   const [changeToggle, setChangeToggle] = useStorage(localKey.changeToggle, false)
+  const [relaodToggle, setReloadToggle] = useStorage(localKey.reloadToggle, false)
   const [weight, setWeight] = useStorage(localKey.weight, "normal")
   const [color, setColor] = useStorage(localKey.color, "#000000")
+  const [style, setStyle] = useStorage(localKey.style, "normal")
+  const [lineHeight, setLineHeight] = useStorage(localKey.lineHeight, "normal")
   const [family, setFamily] = useStorage(localKey.family, "")
+
 
   const setResetState = () => {
     // setWeight("normal")
     // setColor("#000000")
+    // setStyle()
     // setFamily("")
     setChangeToggle(true)
   }
 
-  // const setReload = () => {
-  //   setChangeToggle(false)
-  //   window.location.reload()
-  // }
+  const setReload = () => {
+    setChangeToggle(false)
+    setReloadToggle(true)
+  }
 
   // https://developer.mozilla.org/ja/docs/Web/CSS/font
   // font: XX;で一括指定できるっぽい
@@ -36,15 +48,6 @@ function IndexPopup() {
       style={{
         width: "200px"
       }}>
-
-        <div>
-          {/* <label>
-            文字の大きさ
-          </label> */}
-          {/* pxより%で指定した方が良い？ */}
-          {/* XX倍とかで指定したい */}
-          {/* font-size */}
-        </div>
 
         <div>
           <label>
@@ -73,16 +76,28 @@ function IndexPopup() {
         </div>
 
         <div>
-          {/* <label>
+          <label>
             文字の傾き
-          </label> */}
+          </label>
+          <select value={style} onChange={(e) => setStyle(e.target.value)}>
+            <option value="normal">変更なし</option>
+            <option value="italic">傾ける</option>
+          </select>
           {/* font-style */}       
         </div>
 
         <div>
-          {/* <label>
+          <label>
             行間
-          </label> */}
+          </label>
+          <select value={lineHeight} onChange={(e) => setLineHeight(e.target.value)}>
+            <option value="normal">変更なし</option>
+            <option value="100%">100%</option>
+            <option value="200%">200%</option>
+            <option value="300%">300%</option>
+            <option value="400%">400%</option>
+            <option value="500%">500%</option>
+          </select>
           {/* line-heightで設定できる */}          
         </div>
 
@@ -115,7 +130,8 @@ function IndexPopup() {
             適用
           </button>
           <button
-            onClick={() => setChangeToggle(false)}
+            // onClick={() => setChangeToggle(false)}
+            onClick={() => setReload()}
             disabled={changeToggle ? false: true}
           >
             リセット
