@@ -8,32 +8,56 @@
 // フォントファミリー
 // https://developer.mozilla.org/ja/docs/Web/CSS/font-family
 // https://fromkato.com/webdev/css/properties/font-family
-import type { PlasmoCSConfig } from "plasmo"
-import { useState } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 import { localKey } from "popup"
+import type { PlasmoCSConfig } from "plasmo"
+import { useEffect } from "react";
 
+ 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
 }
 
-type Props = {
-  changeVal: boolean,
-  weight: string,
-  color: string,
-  family: string
-}
+
 
 const fontChange = () => {
 
+  const [changeToggle] = useStorage(localKey.changeToggle)
+  const [weight] = useStorage(localKey.weight)
+  const [color] = useStorage(localKey.color)
+  const [family] = useStorage(localKey.family)
 
+  const css = `
+    * {
+      font-weight: ${weight} !important;
+      color: ${color} !important;
+      font-family: ${family} !important;
+    }
+  `
+
+  function injectStyle(changeToggle: boolean,css: string) {
+    if (changeToggle) {
+      const style = document.createElement("style");
+      style.textContent = css;
+      document.head.appendChild(style);
+    } else {
+      console.log("")
+
+    }
+  }
+
+  useEffect(() => {
+    injectStyle(changeToggle, css)
+    // if (!changeToggle) {
+    //   window.location.reload()
+    // }
+  }, [changeToggle])
 
 
 
   return (
     // <></>
     <div>
-      {localKey.weight}
     </div>
   )
 }

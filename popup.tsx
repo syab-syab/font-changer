@@ -2,19 +2,30 @@ import { useState } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 
 export const localKey = {
-  weight: "local-font-weight"
+  changeToggle: "local-font-change-toggle",
+  weight: "local-font-weight",
+  color: "local-font-color",
+  family: "local-font-family"
 }
 
 function IndexPopup() {
-  const [weight, setWeight] = useState("normal")
-  const [color, setColor] = useState("#000000")
-  const [family, setFamily] = useState("serif")
+  // 選択はオプションページでやらせた方が良いかも
+  const [changeToggle, setChangeToggle] = useStorage(localKey.changeToggle, false)
+  const [weight, setWeight] = useStorage(localKey.weight, "normal")
+  const [color, setColor] = useStorage(localKey.color, "#000000")
+  const [family, setFamily] = useStorage(localKey.family, "")
 
   const setResetState = () => {
-    setWeight("normal")
-    setColor("#000000")
-    setFamily("serif")
+    // setWeight("normal")
+    // setColor("#000000")
+    // setFamily("")
+    setChangeToggle(true)
   }
+
+  // const setReload = () => {
+  //   setChangeToggle(false)
+  //   window.location.reload()
+  // }
 
   // https://developer.mozilla.org/ja/docs/Web/CSS/font
   // font: XX;で一括指定できるっぽい
@@ -80,6 +91,7 @@ function IndexPopup() {
             フォントの種類
           </label>
           <select value={family} onChange={(e) => setFamily(e.target.value)}>
+            <option value="">変更なし</option>
             <option value="serif">serif</option>
             <option value="sans-serif">sans-serif</option>
             <option value="cursive">cursive</option>
@@ -96,8 +108,17 @@ function IndexPopup() {
         </div>
 
         <div>
-          <button onClick={() => setResetState() }>
+          <button
+            onClick={() => setResetState()}
+            disabled={changeToggle ? true : false}
+          >
             適用
+          </button>
+          <button
+            onClick={() => setChangeToggle(false)}
+            disabled={changeToggle ? false: true}
+          >
+            リセット
           </button>
         </div>
     </div>
