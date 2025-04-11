@@ -1,6 +1,6 @@
 {
   "name": "font-changer",
-  "displayName": "Font changer",
+  "displayName": "Font Changer",
   "version": "1.0.0",
   "description": "Webページのフォントのスタイルを変更できます。",
   "author": "syab-syab",
@@ -30,8 +30,7 @@
       "https://*/*"
     ],
     "permissions": [
-      "storage",
-      "unlimitedStorage"
+      "storage"
     ]
   }
 }
