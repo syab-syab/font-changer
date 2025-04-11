@@ -2,7 +2,6 @@
 import { useStorage } from "@plasmohq/storage/hook"
 import Header from "~components/header"
 import styled from "styled-components"
-// import { Label } from "~components/label"
 
 const Wrapper = styled.div`
   padding: 20px;
@@ -37,6 +36,11 @@ const ResetBtn = styled.button`
   font-size: 20px;
 `
 
+const Warning = styled.span`
+  color: red;
+  font-weight: bold;
+`
+
 export const localKey = {
   changeToggle: "local-font-change-toggle",
   reloadToggle: "local-reload-toggle",
@@ -63,7 +67,6 @@ function IndexPopup() {
   const [inclination, setInclination] = useStorage(localKey.inclination, "normal")
   const [lineHeight, setLineHeight] = useStorage(localKey.lineHeight, "normal")
   const [family, setFamily] = useStorage(localKey.family, "")
-
 
   const setResetState = () => {
     // setWeight("normal")
@@ -195,6 +198,9 @@ function IndexPopup() {
               リセット
             </ResetBtn>
           </div>
+          <Warning>
+          現在の仕様では、<br />リセットボタンを押すと開いているタブやウィンドウをまとめてリロードしてしまうので<br />ご注意ください。
+          </Warning>
         </Wrapper>
     </div>
   )

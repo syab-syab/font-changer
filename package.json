@@ -1,8 +1,8 @@
 {
   "name": "font-changer",
   "displayName": "Font changer",
-  "version": "0.0.1",
-  "description": "A basic Plasmo extension.",
+  "version": "1.0.0",
+  "description": "Webページのフォントのスタイルを変更できます。",
   "author": "syab-syab",
   "scripts": {
     "dev": "plasmo dev",
